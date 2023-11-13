@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Todo Application with Django
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            
+            <div class="card p-4">
+                {% if todo_false %}
+                <div class="h3">Preview Profile <span class="badge badge-info ">{{todo_false_count}}</span></div>
+                <hr>
+                <table class="table">
+                    
+                    <thead>
+                        <tr>
+                            <th scope="col">Images</th>
+                            <th scope="col">Name</th>
+                            <th class="text-center btn-outline-danger" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider table-divider-color">
+
+                        {% for item in todo_false %}
+                        <tr>
+                            <td>
+                                <img width="35" class="rounded-9" src="{{item.images.url}}" alt="">
+                            </td>
+                            <td>{{item.name }}</td>
+                            <td class="text-center btn-outline-warning">
+                                <a class="btn btn-danger" 
+                                href="{% url 'delete_item' item.pk %}">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+
+                                <a class="btn btn-warning" 
+                                href="{% url 'update_item' item.pk %}">
+                                    <i class="fa-solid fa-pen-nib"></i>
+                                </a>
+                                
+                                <a class="btn btn-outline-success" 
+                                href="{% url 'update_status' item.pk %}">
+                                    <i class="fa-solid fa-check"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="text-center text-danger h3 btn-outline-primary">No Todo Profile for Previews</div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <div class="h3">Submited Profile <span class="badge badge-info ">{{todo_true_count}}</span></div>
+                <hr>
+                <table class="table">
+                    {% if todo_true %}
+                    <thead>                      
+                        <tr>
+                            <th scope="col">Images</th>
+                            <th scope="col">Name</th>
+                            <th class="text-center btn-outline-info" scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider table-divider-color">
+                        {% for item in todo_true %}
+                        <tr>
+                            <td>
+                                <img width="35" class="rounded-9" src="{{item.images.url}}" alt="">
+                            </td>
+                            <td >{{item.name | upper}}</td>
+                            <td class="text-center btn-outline-success">
+                               
+                                <a class="btn btn-outline-success" href="#">
+                                    <i class="fa-regular fa-circle-check me-2"></i>Submited</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <div class="text-center text-danger h3 btn-outline-dark">No Todo Profile Submited Yet</div>
+                        {% endif %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="offset-md-2 col-md-8 mt-4">
+            <div class="text-center h4 bg-light btn-outline-secondary">
+                Application with Your Information
+            </div>
+            <hr>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
+                <hr>
+                <button type="submit" class="btn btn-dark" href="">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
